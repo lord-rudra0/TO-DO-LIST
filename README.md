@@ -41,12 +41,12 @@ TaskMaster is a sleek, modern task management application built with vanilla Jav
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/taskmaster.git
+   git clone https://github.com/lord-rudra0/TO-DO-LIST
    ```
 
 2. Navigate to the project directory:
    ```bash
-   cd taskmaster
+   cd TO-DO-LIST
    ```
 
 3. Install dependencies:
