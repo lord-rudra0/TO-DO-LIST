@@ -1,11 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TaskMaster</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
+
 <body>
-    
+    <div id="app">
+        <div id="alert-container" class="alert-container"></div>
+        <div class="sidebar">
+            <div class="user-info">
+                <div class="avatar">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23fff' d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E"
+                        alt="User avatar">
+                </div>
+                <h2>Welcome back</h2>
+            </div>
+
+            <nav class="main-nav">
+                <a href="#" class="nav-item active" data-filter="all">
+                    <span class="nav-icon">🏠</span>
+                    All Tasks
+                </a>
+                <a href="#" class="nav-item" data-filter="active">
+                    <span class="nav-icon">📋</span>
+                    Active
+                </a>
+                <a href="#" class="nav-item" data-filter="completed">
+                    <span class="nav-icon">✅</span>
+                    Completed
+                </a>
+                <a href="#" class="nav-item" data-filter="deleted">
+                    <span class="nav-icon">🗑️</span>
+                    Recently Deleted
+                </a>
+                <a href="#" class="nav-item" data-view="statistics">
+                    <span class="nav-icon">📊</span>
+                    Statistics
+                </a>
+            </nav>
+        </div>
+
+        <main class="main-content">
+            <div class="content-header">
+                <h1 id="view-title">All Tasks</h1>
+                <button id="theme-toggle" class="theme-toggle">🌙</button>
+            </div>
+
+            <div class="filter-dropdown">
+                <select id="filter-select">
+                    <option value="all">All Tasks</option>
+                    <option value="active">Active</option>
+                    <option value="completed">Completed</option>
+                    <option value="deleted">Recently Deleted</option>
+                    <option value="today">Today</option>
+                    <option value="this-week">This Week</option>
+                </select>
+            </div>
+
+
+
+            <div class="toolbar">
+                <div class="search-box">
+                    <input type="text" id="search-input" placeholder="Search tasks...">
+                </div>
+
+                <div class="toolbar-actions">
+                    <div class="sort-dropdown">
+                        <select id="sort-select">
+                            <option value="deadline">Sort by Deadline</option>
+                            <option value="created">Sort by Created Date</option>
+                            <option value="name">Sort by Name</option>
+                            <option value="priority">Sort by Priority</option>
+                            <option value="tag">Sort by Tag</option>
+                        </select>
+                    </div>
+                    <button id="add-task-btn" class="toolbar-btn primary">Add Task</button>
+                </div>
+            </div>
+
+            <div id="tasks-container">
+                <ul id="todo-list" class="todo-list"></ul>
+                <div id="empty-state" class="empty-state">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236b7280' d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z'/%3E%3C/svg%3E"
+                        alt="No tasks">
+                    <h3>No tasks to show</h3>
+                    <p>Add a new task to get started</p>
+                </div>
+            </div>
+
+            <div id="statistics-view" class="statistics-view hidden">
+                <div class="stat-cards">
+                    <div class="stat-card">
+                        <h3>Total Tasks</h3>
+                        <div id="total-tasks" class="stat-value">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Completed</h3>
+                        <div id="completed-tasks" class="stat-value">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Active</h3>
+                        <div id="active-tasks" class="stat-value">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Overdue</h3>
+                        <div id="overdue-tasks" class="stat-value">0</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <dialog id="add-task-dialog" class="dialog">
+            <h2>Add New Task</h2>
+            <form id="todo-form">
+                <div class="form-group">
+                    <label for="todo-input">Task Title</label>
+                    <input type="text" id="todo-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="todo-description">Description</label>
+                    <textarea id="todo-description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="todo-deadline">Deadline</label>
+                    <input type="datetime-local" id="todo-deadline" required>
+                </div>
+                <div class="form-group">
+                    <label for="todo-priority">Priority</label>
+                    <select id="todo-priority">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="todo-tag">Category</label>
+                    <select id="todo-tag">
+                        <option value="work">Work</option>
+                        <option value="personal">Personal</option>
+                        <option value="shopping">Shopping</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="dialog-actions">
+                    <button type="button" id="cancel-add">Cancel</button>
+                    <button type="submit">Add Task</button>
+                </div>
+            </form>
+        </dialog>
+
+        <dialog id="edit-task-dialog" class="dialog">
+            <h2>Edit Task</h2>
+            <form id="edit-todo-form">
+                <div class="form-group">
+                    <label for="edit-todo-input">Task Title</label>
+                    <input type="text" id="edit-todo-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-todo-description">Description</label>
+                    <textarea id="edit-todo-description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-todo-deadline">Deadline</label>
+                    <input type="datetime-local" id="edit-todo-deadline" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-todo-priority">Priority</label>
+                    <select id="edit-todo-priority">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="edit-todo-tag">Category</label>
+                    <select id="edit-todo-tag">
+                        <option value="work">Work</option>
+                        <option value="personal">Personal</option>
+                        <option value="shopping">Shopping</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="dialog-actions">
+                    <button type="button" id="cancel-edit">Cancel</button>
+                    <button type="submit">Save Changes</button>
+                </div>
+            </form>
+        </dialog>
+    </div>
+    <script type="module" src="/js/main.js"></script>
 </body>
+
 </html>
