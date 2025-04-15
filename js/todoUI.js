@@ -48,6 +48,19 @@ export class TodoUI {
     this.searchInput.addEventListener('input', () => this.handleSearch());
     this.sortSelect.addEventListener('change', () => this.handleSort());
     
+    // Add event listener for mobile filter dropdown
+    const filterSelect = document.getElementById('filter-select');
+    if (filterSelect) {
+      filterSelect.addEventListener('change', () => {
+        const value = filterSelect.value;
+        if (value === 'today' || value === 'this-week') {
+          this.setQuickFilter(value === 'today' ? 'today' : 'week');
+        } else {
+          this.setFilter(value);
+        }
+      });
+    }
+
     document.getElementById('add-task-btn').addEventListener('click', () => {
       this.addTaskDialog.showModal();
     });
